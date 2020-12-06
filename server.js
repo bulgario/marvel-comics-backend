@@ -4,6 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const connection = require('./connection');
 
 const app = express();
 
@@ -17,5 +18,7 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }));
 app.use(require('./routes/routes'));
 
 app.use(notFoundRouter);
+
+app.listen(process.env.PORT || 4000);
 
 module.exports = app;
