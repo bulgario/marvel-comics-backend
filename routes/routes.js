@@ -9,6 +9,7 @@ const User = require('../controllers/UserController');
 const LoginUser = require('../controllers/LoginController');
 const CharacterController = require('../controllers/CharacterController');
 const ComicController = require('../controllers/ComicController');
+const Favorite = require('../controllers/FavoriteController');
 
 const router = Router();
 // GET METHODS
@@ -39,8 +40,13 @@ router.put('/user/edit', userAuthenticated.mandatory, (req, res, next) => {
 });
 
 // FAVORITE COMICS
-router.post('/add-favorite', userAuthenticated.mandatory, (req, res, next) => {
-  User.addFavoriteComics(req, res);
+router.post('/add/favorite/comic', (req, res, next) => {
+  Favorite.addFavoriteComic(req, res);
+});
+
+// FAVORITE CHARACTERS
+router.post('/add/favorite/character', (req, res, next) => {
+  Favorite.addFavoriteCharacter(req, res);
 });
 
 // MARVEL API
