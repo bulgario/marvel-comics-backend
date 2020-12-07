@@ -3,8 +3,8 @@ const connection = require('../connection');
 
 class UserController {
   async register(req, res, next) {
-    const { nome, sobrenome, email, password } = req.body;
-    bcrypt.hash(password, 10, (err, hash) => {
+    const { nome, sobrenome, email, senha } = req.body;
+    bcrypt.hash(senha, 10, (err, hash) => {
       if (err) return res.status(500).send({ error: err });
       connection.query(
         'SELECT * FROM Users WHERE email = ?',
@@ -42,19 +42,63 @@ class UserController {
     });
   }
 
-  async getUser(req, res) {
+  async edit(req, res, next) {
+    const { nome, sobrenome, email, senha } = req.body;
+    connection.query(
+      'UPDATE Users SET nome=?, sobrenome=?, senha=? WHERE email=?',
+      [nome, sobrenome, senha, email],
+      (error, results) => {
+        if (error) {
+          return res.status(500).send({ error: error });
+        }
+        return res
+          .status(200)
+          .send({ message: 'Dados Alterados com sucesso!' });
+      }
+    );
+  }
+
+  async user(req, res) {
     const { email } = req.query;
     connection.query(
       'SELECT * from Users WHERE email = ?',
       [email],
-      (err, rows, fields) => {
-        if (!err) {
-          res.send(rows);
-        } else {
-          console.log(err);
+      (err, data) => {
+        try {
+          res.status(200).send({
+            data: {
+              id: data[0].id,
+              nome: data[0].nome,
+              sobrenome: data[0].sobrenome,
+              email: data[0].email,
+            },
+          });
+        } catch (error) {
+          res.status(500).send({ error: error });
         }
       }
     );
+  }
+
+  async userById(req, res) {
+    const { id } = req.params;
+    connection.query('SELECT * from Users WHERE id = ?', [id], (err, data) => {
+      try {
+        res.status(200).send({
+          id: data[0].id,
+          nome: data[0].nome,
+          sobrenome: data[0].sobrenome,
+          email: data[0].email,
+          senha: data[0].senha,
+        });
+      } catch (error) {
+        res.status(500).send({ error: error });
+      }
+    });
+  }
+
+  async addFavoriteComics(req, res, next) {
+    console.log(req.body);
   }
 }
 

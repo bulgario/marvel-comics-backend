@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const connection = require('./connection');
+const cors = require('cors');
 
 const app = express();
 
@@ -14,7 +14,7 @@ const notFoundRouter = (req, res) => {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }));
-
+app.use(cors());
 app.use(require('./routes/routes'));
 
 app.use(notFoundRouter);
