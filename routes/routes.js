@@ -8,7 +8,7 @@ const invalidRouter = (req, res) => {
 const User = require('../controllers/UserController');
 const LoginUser = require('../controllers/LoginController');
 const CharacterController = require('../controllers/CharacterController');
-// const ComicController = require('../controllers/ComicController');
+const ComicController = require('../controllers/ComicController');
 
 const router = Router();
 // GET METHODS
@@ -46,8 +46,8 @@ router.post('/add-favorite', userAuthenticated.mandatory, (req, res, next) => {
 // MARVEL API
 router.get('/characters', CharacterController.index);
 router.get('/characters/:id', CharacterController.singleCharacter);
-// router.get('/comics', ComicController.index);
-// router.get('/comics/:id', ComicController.show);
+router.get('/comics', ComicController.index);
+router.get('/comics/:id', ComicController.singleComic);
 
 router.use('/', invalidRouter);
 
