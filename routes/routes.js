@@ -30,9 +30,7 @@ router.get('/comics/:id', ComicController.singleComic);
 router.post(
   '/add/favorite/comic',
   userAuthenticated.mandatory,
-  (req, res, next) => {
-    Favorite.addFavoriteComic(req, res);
-  }
+  Favorite.addFavoriteComic
 );
 
 // FAVORITE CHARACTERS
