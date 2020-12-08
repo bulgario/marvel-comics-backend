@@ -24,6 +24,8 @@ class UserController {
             return res.status(200).send({
               message: 'Autenticado com sucesso',
               token,
+              id: results[0].id,
+              email: results[0].email,
             });
           }
           return res.status(401).send({ message: 'Falha na autenticação' });
