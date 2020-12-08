@@ -9,11 +9,16 @@ Clone esse repositório então instale suas dependencias usando:
 $ npm install
 ```
 
-Crie um arquivo `.env` que deve conter suas credenciais da Marvel API:
+Crie um arquivo `.env` que deve conter suas credenciais da Marvel API, sua token secreta e os dados do banco:
 
 ```
-export MARVEL_PUBLIC_KEY=your_public_key
-export MARVEL_PRIVATE_KEY=your_private_key
+MARVEL_PUBLIC_KEY=your_public_key
+MARVEL_PRIVATE_KEY=your_private_key
+DATABASE_URL='your_url'
+DATABASE_NAME='your_data_base_name'
+DATABASE_USER='your_data_base_user'
+DATABASE_PASSWORD='your_password'
+ACCESS_TOKEN_SECRET='your_token_secret'
 ```
 
 Inicie o servidor com npm start
@@ -34,8 +39,12 @@ Tcomb é uma biblioteca para Node.js e que permite verificar os tipos de valores
 Por questões de tempo não optei o uso de uma ORM por ganho de tempo.
 
 
-### Modelos para descrever dados\
+### Modelos para descrever dados
 
 Linguagens dinâmicas como JavaScript não têm tipos, o que pode tornar difícil descobrir que tipo de estruturas de dados o projeto está usando.
 Aqui, foi declarado "modelos" (no sentido de "modelo de domínio", não "modelos de banco de dados"),
 que servem como documentação e também podem ser usados ​​programaticamente para validar respostas JSON.
+
+
+### ACCESS_TOKEN_SECRET
+Esta token foi gerada pelo terminal do NODE usando bcrypt
