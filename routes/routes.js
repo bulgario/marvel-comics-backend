@@ -26,27 +26,36 @@ router.get('/comics/:id', ComicController.singleComic);
 
 // POST METHODS
 
-// FAVORITE COMICS
 router.post(
   '/add/favorite/comic',
   userAuthenticated.mandatory,
   Favorite.addFavoriteComic
 );
 
-// FAVORITE CHARACTERS
 router.post(
   '/add/favorite/character',
   userAuthenticated.mandatory,
   Favorite.addFavoriteCharacter
 );
 
-// REGISTER
+// DELETE METHODS
+
+router.delete(
+  '/delete/favorite/comic',
+  userAuthenticated.mandatory,
+  Favorite.removeFavoriteComic
+);
+
+router.delete(
+  '/delete/favorite/character',
+  userAuthenticated.mandatory,
+  Favorite.removeFavoriteCharacter
+);
+
 router.post('/cadastro', User.register);
 
-// LOGIN
 router.post('/user/login', LoginUser.login);
 
-// EDIT USER
 router.put('/user/edit', userAuthenticated.mandatory, User.edit);
 
 router.use('/', invalidRouter);
