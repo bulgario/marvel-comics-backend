@@ -22,16 +22,13 @@ const Character = t.struct(
 );
 
 Character.getMarvelUrl = (character) => {
-  return character.urls.find(function(url) {
+  return character.urls.find((url) => {
     return url.type === 'detail';
   }).url;
 };
 
 Character.hasDescription = (character) => {
-  return (
-    character.description &&
-    character.description.length > 0
-  );
+  return character.description && character.description.length > 0;
 };
 
 Character.hasComics = (character) => {

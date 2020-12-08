@@ -1,11 +1,14 @@
 const t = require('tcomb');
 
-const Pagination = t.struct({
-  offset: t.Number,
-  limit: t.Number,
-  total: t.Number,
-  count: t.Number
-}, 'Pagination');
+const Pagination = t.struct(
+  {
+    offset: t.Number,
+    limit: t.Number,
+    total: t.Number,
+    count: t.Number,
+  },
+  'Pagination'
+);
 
 Pagination.getStart = (pagination) => {
   return pagination.offset + 1;
@@ -16,11 +19,11 @@ Pagination.getEnd = (pagination) => {
 };
 
 Pagination.isFirstPage = (pagination) => {
-  return (pagination.offset === 0);
+  return pagination.offset === 0;
 };
 
 Pagination.isLastPage = (pagination) => {
-  return (Pagination.getEnd(pagination) === pagination.total);
+  return Pagination.getEnd(pagination) === pagination.total;
 };
 
 Pagination.previousPageOffset = (pagination) => {

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const crypto = require('crypto');
 const fetch = require('node-fetch');
 const queryString = require('query-string');
@@ -6,14 +7,12 @@ const Pagination = require('../../models/pagination');
 const Character = require('../../models/character');
 const Comic = require('../../models/comic');
 
-function Marvel(options) {
-  // this.publicKey = options.publicKey || '';
-  // this.privateKey = options.privateKey || '';
-  this.publicKey = '04637776ca69611615d186d795eccda2';
-  this.privateKey = '4d61684b29b9b10b8048a03d15f9b42f22ec2850';
+function Marvel() {
+  this.publicKey = process.env.MARVEL_PUBLIC_KEY || '';
+  this.privateKey = process.env.MARVEL_PRIVATE_KEY || '';
 }
 
-Marvel.prototype.findAllCharacters = function(options) {
+Marvel.prototype.findAllCharacters = function (options) {
   const self = this;
   options = options || {};
   const ts = this._timestamp();
@@ -21,63 +20,63 @@ Marvel.prototype.findAllCharacters = function(options) {
   const offset = typeof options.offset !== 'undefined' ? options.offset : 0;
 
   const qs = queryString.stringify({
-    ts: ts,
+    ts,
     apikey: this.publicKey,
     hash: this._createHash(ts),
-    limit: limit,
-    offset: offset
+    limit,
+    offset,
   });
-  const url = 'http://gateway.marvel.com/v1/public/characters?' + qs;
+  const url = `http://gateway.marvel.com/v1/public/characters?${qs}`;
 
   return fetch(url)
-    .then(function(res) {
+    .then((res) => {
       if (res.status !== 200) {
         return self._handleError(res);
       }
 
       return res.json();
     })
-    .then(function(body) {
+    .then((body) => {
       const pagination = Pagination(body.data);
-      const characters = body.data.results.map(function(payload) {
+      const characters = body.data.results.map((payload) => {
         return Character(payload);
       });
 
       return {
-        pagination: pagination,
-        characters: characters
+        pagination,
+        characters,
       };
     });
 };
 
-Marvel.prototype.findCharacter = function(id) {
+Marvel.prototype.findCharacter = function (id) {
   const self = this;
   const ts = this._timestamp();
 
   const qs = queryString.stringify({
-    ts: ts,
+    ts,
     apikey: this.publicKey,
-    hash: this._createHash(ts)
+    hash: this._createHash(ts),
   });
 
-  const url = 'http://gateway.marvel.com/v1/public/characters/'+ id + '?' + qs;
+  const url = `http://gateway.marvel.com/v1/public/characters/${id}?${qs}`;
 
   return fetch(url)
-    .then(function(res) {
+    .then((res) => {
       if (res.status !== 200) {
         return self._handleError(res);
       }
       return res.json();
     })
-    .then(function(body) {
+    .then((body) => {
       const character = Character(body.data.results[0]);
       return {
-        character: character
+        character,
       };
     });
 };
 
-Marvel.prototype.findAllComics = function(options) {
+Marvel.prototype.findAllComics = function (options) {
   const self = this;
   options = options || {};
   const ts = this._timestamp();
@@ -85,82 +84,81 @@ Marvel.prototype.findAllComics = function(options) {
   const offset = typeof options.offset !== 'undefined' ? options.offset : 0;
 
   const qs = queryString.stringify({
-    ts: ts,
+    ts,
     apikey: this.publicKey,
     hash: this._createHash(ts),
-    limit: limit,
-    offset: offset
+    limit,
+    offset,
   });
-  const url = 'http://gateway.marvel.com/v1/public/comics?' + qs;
+  const url = `http://gateway.marvel.com/v1/public/comics?${qs}`;
 
   return fetch(url)
-    .then(function(res) {
+    .then((res) => {
       if (res.status !== 200) {
         return self._handleError(res);
       }
 
       return res.json();
     })
-    .then(function(body) {
+    .then((body) => {
       const pagination = Pagination(body.data);
-      const comics = body.data.results.map(function(payload) {
+      const comics = body.data.results.map((payload) => {
         return Comic(payload);
       });
 
       return {
-        pagination: pagination,
-        comics: comics
+        pagination,
+        comics,
       };
     });
 };
 
-Marvel.prototype.findComic = function(id) {
+Marvel.prototype.findComic = function (id) {
   const self = this;
   const ts = this._timestamp();
 
   const qs = queryString.stringify({
-    ts: ts,
+    ts,
     apikey: this.publicKey,
     hash: this._createHash(ts)
   });
-  const url = 'http://gateway.marvel.com/v1/public/comics/'+ id + '?' + qs;
+  const url = `http://gateway.marvel.com/v1/public/comics/${id}?${qs}`;
 
   return fetch(url)
-    .then(function(res) {
+    .then((res) => {
       if (res.status !== 200) {
         return self._handleError(res);
       }
 
       return res.json();
     })
-    .then(function(body) {
+    .then((body) => {
       const comic = Comic(body.data.results[0]);
 
       return {
-        comic: comic
+        comic,
       };
     });
 };
 
-Marvel.prototype._createHash = function(ts) {
+Marvel.prototype._createHash = function (ts) {
   const content = ts + this.privateKey + this.publicKey;
   const hash = crypto.createHash('md5').update(content).digest('hex');
 
   return hash;
 };
 
-Marvel.prototype._timestamp = function() {
+Marvel.prototype._timestamp = function () {
   return parseInt(Date.now() / 1000, 10);
 };
 
-Marvel.prototype._handleError = function(res) {
-  return res.text()
-    .then(function(bodyText) {
-      const message = res.status + ' ' + res.statusText + ' ' + bodyText;
-      const error = new Error(message);
-      error.status = res.status;
-      throw error;
-    });
+Marvel.prototype._handleError = function (res) {
+  return res.text().then((bodyText) => {
+    const message = `${res.status} ${res.statusText} ${bodyText}`;
+    const error = new Error(message);
+    error.status = res.status;
+    throw error;
+  });
 };
 
 module.exports = Marvel;

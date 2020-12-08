@@ -45,17 +45,20 @@ class UserController {
   async edit(req, res, next) {
     const { nome, sobrenome, email, senhaAntiga, senhaNova } = req.body;
     const senhaAntigaHash = await bcrypt.hash(senhaAntiga, 10);
-    const isUser = await connection.query(`SELECT * from Users where email = ? AND senha= ? LIMIT 1`,[email, senhaAntigaHash]);
-    if(!isUser) {
+    const isUser = await connection.query(
+      `SELECT * from Users where email = ? AND senha= ? LIMIT 1`,
+      [email, senhaAntigaHash]
+    );
+    if (!isUser) {
       return res.status(500).send({ error: 'Error com senha' });
     }
     const senhaNovaHash = await bcrypt.hash(senhaNova, 10);
     connection.query(
       'UPDATE Users SET nome=?, sobrenome=?, senha=? WHERE email=?',
       [nome, sobrenome, senhaNovaHash, email],
-      (error, results) => {
+      (error) => {
         if (error) {
-          return res.status(500).send({ error: error });
+          return res.status(500).send({ error });
         }
         return res
           .status(200)
@@ -80,7 +83,7 @@ class UserController {
             },
           });
         } catch (error) {
-          res.status(500).send({ error: error });
+          res.status(500).send({ error });
         }
       }
     );
@@ -97,7 +100,7 @@ class UserController {
           email: data[0].email,
         });
       } catch (error) {
-        res.status(500).send({ error: error });
+        res.status(500).send({ error });
       }
     });
   }

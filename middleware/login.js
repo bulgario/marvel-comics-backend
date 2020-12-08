@@ -5,6 +5,9 @@ exports.mandatory = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     const decode = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     req.usuario = decode;
+    if (!decode) {
+      return false;
+    }
     next();
   } catch (error) {
     return res

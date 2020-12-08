@@ -1,11 +1,11 @@
 class ComicController {
   async index(req, res, next) {
-    const marvel = req.marvel;
-    const offset = req.query.offset;
+    const { marvel } = req;
+    const { offset } = req.query;
 
     marvel
       .findAllComics({
-        offset: offset,
+        offset,
       })
       .then((result) => {
         if (result) {
@@ -23,8 +23,8 @@ class ComicController {
   }
 
   async singleComic(req, res, next) {
-    const marvel = req.marvel;
-    const id = req.params.id;
+    const { marvel } = req;
+    const { id } = req.params;
 
     marvel
       .findComic(id)

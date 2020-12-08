@@ -7,9 +7,9 @@ class UserController {
     const { email, senha } = req.body;
     if (email && senha) {
       const query = `SELECT * FROM Users WHERE email=?`;
-      connection.query(query, [email], (error, results, fields) => {
+      connection.query(query, [email], (error, results) => {
         if (error) {
-          return res.status(500).send({ error: error });
+          return res.status(500).send({ error });
         }
         if (results.length < 1) {
           return res.status(401).send({ message: 'Falha na autenticação' });
@@ -23,7 +23,7 @@ class UserController {
             const token = authenticateToken(results);
             return res.status(200).send({
               message: 'Autenticado com sucesso',
-              token: token,
+              token,
             });
           }
           return res.status(401).send({ message: 'Falha na autenticação' });

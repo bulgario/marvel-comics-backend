@@ -1,11 +1,11 @@
 class CharacterController {
   async index(req, res, next) {
-    const marvel = req.marvel;
-    const offset = req.query.offset;
+    const { marvel } = req;
+    const { offset } = req.query;
 
     marvel
       .findAllCharacters({
-        offset: offset,
+        offset,
       })
       .then((result) => {
         if (result) {
@@ -14,14 +14,17 @@ class CharacterController {
             pagination: result.pagination,
           });
         }
-      }).catch((err) => {
-        res.status(404).send({ message: 'Erro ao encontrar personagens', error: err });
+      })
+      .catch((err) => {
+        res
+          .status(404)
+          .send({ message: 'Erro ao encontrar personagens', error: err });
       });
   }
 
   async singleCharacter(req, res, next) {
-    const marvel = req.marvel;
-    const id = req.params.id;
+    const { marvel } = req;
+    const { id } = req.params;
 
     marvel
       .findCharacter(id)
@@ -29,8 +32,9 @@ class CharacterController {
         res.status(200).send(result);
       })
       .catch((err) => {
-        res.status(404).send({ message: 'Personagem não encontrado', error: err });
-
+        res
+          .status(404)
+          .send({ message: 'Personagem não encontrado', error: err });
         next(err);
       });
   }

@@ -40,7 +40,7 @@ const Comic = t.struct(
 );
 
 Comic.getMarvelUrl = (comic) => {
-  return comic.urls.find(function (url) {
+  return comic.urls.find((url) => {
     return url.type === 'detail';
   }).url;
 };

@@ -9,11 +9,11 @@ const Image = t.struct(
 );
 
 Image.getPortraitXLarge = (image) => {
-  return image.path + '/portrait_xlarge.' + image.extension;
+  return `${image.path}/portrait_xlarge.${image.extension}`;
 };
 
 Image.getStandardXLarge = (image) => {
-  return image.path + '/standard_xlarge.' + image.extension;
+  return `${image.path}/standard_xlarge.${image.extension}`;
 };
 
 module.exports = Image;
