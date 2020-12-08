@@ -14,10 +14,12 @@ Crie um arquivo `.env` que deve conter suas credenciais da Marvel API, sua token
 ```
 MARVEL_PUBLIC_KEY=your_public_key
 MARVEL_PRIVATE_KEY=your_private_key
+
 DATABASE_URL='your_url'
 DATABASE_NAME='your_data_base_name'
 DATABASE_USER='your_data_base_user'
 DATABASE_PASSWORD='your_password'
+
 ACCESS_TOKEN_SECRET='your_token_secret'
 ```
 
