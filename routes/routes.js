@@ -24,6 +24,12 @@ router.get('/characters/:id', CharacterController.singleCharacter);
 router.get('/comics', ComicController.index);
 router.get('/comics/:id', ComicController.singleComic);
 
+router.get(
+  '/favorite/comic/all/:id',
+  userAuthenticated.mandatory,
+  Favorite.allComic
+);
+
 // POST METHODS
 
 router.post(
@@ -56,7 +62,7 @@ router.post('/cadastro', User.register);
 
 router.post('/user/login', LoginUser.login);
 
-router.put('/user/edit', userAuthenticated.mandatory, User.edit);
+router.put('/user/edit', User.edit);
 
 router.use('/', invalidRouter);
 

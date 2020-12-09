@@ -1,4 +1,5 @@
 const connection = require('../connection');
+const getFavoritesComics = require('../services/Favorites/getFavoritesComics');
 
 class FavoriteController {
   async addFavoriteComic(req, res, next) {
@@ -24,6 +25,19 @@ class FavoriteController {
       }
       const response = { message: 'Comic deletada com sucesso!' };
       return res.status(201).send(response);
+    });
+  }
+
+  async allComic(req, res, next) {
+    const { id_user } = req.query;
+    const { marvel } = req;
+    const query = `SELECT * FROM FavoriteComic WHERE id_user = ?;`;
+    connection.query(query, [id_user], async (error, result) => {
+      if (error) {
+        return res.status(500).send({ error, message: 'Comic não encontrada' });
+      }
+
+      return res.status(201).send(await getFavoritesComics(result, marvel));
     });
   }
 

@@ -25,7 +25,6 @@ class ComicController {
   async singleComic(req, res, next) {
     const { marvel } = req;
     const { id } = req.params;
-
     marvel
       .findComic(id)
       .then((result) => {
