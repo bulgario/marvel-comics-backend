@@ -5,6 +5,9 @@ Using the [Marvel API](https://developer.marvel.com).
 # Url backend
 https://marvel-comics-lib.herokuapp.com/
 
+# Diagrama do banco
+https://dbdiagram.io/d/5fd112c39a6c525a03ba770a
+
 ## Start
 
 Clone esse repositório então instale suas dependencias usando:
