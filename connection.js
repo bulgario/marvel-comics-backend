@@ -1,5 +1,4 @@
 const mysql = require('mysql');
-const { connect } = require('./server');
 
 const connection = mysql.createConnection({
   host: process.env.DATABASE_URL,
