@@ -36,6 +36,35 @@ Inicie o servidor com npm start
 $ npm run devStart
 ```
 
+
+Scripts para criar o banco
+```
+CREATE TABLE Users (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NOT NULL,
+  `sobrenome` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NOT NULL,
+  `senha` VARCHAR(500) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC));
+
+
+CREATE TABLE FavoriteComic (
+  `id` INT(11) NOT NULL,
+  `id_user` INT(11) NOT NULL,
+  `id_api` INT(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
+  UNIQUE INDEX `id_api_UNIQUE` (`id_api` ASC));
+
+CREATE TABLE FavoriteCharacter (
+  `id` INT(11) NOT NULL,
+  `id_user` INT(11) NOT NULL,
+  `id_api` INT(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
+  UNIQUE INDEX `id_api_UNIQUE` (`id_api` ASC));
+```
 ## Comentários
 
 ### O uso do tcomb 
